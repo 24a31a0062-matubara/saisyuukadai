@@ -11,7 +11,7 @@ public class EnemyManager : MonoBehaviour
     private readonly List<Enemy> _locked = new List<Enemy>();
 
     [Header("Selection")]
-    [Tooltip("ビューポート中心からの距離で選別。画面外は除外。")]
+    [Tooltip("ビューポート中心からの距離で選別し画面外は除外する")]
     public float viewportMargin = 0.05f; 
     [Tooltip("必要なら前方に限定（dot > 0）。")]
     public bool requireFront = true;

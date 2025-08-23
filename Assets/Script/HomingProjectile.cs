@@ -32,7 +32,6 @@ public class HomingProjectile : MonoBehaviour
             return;
         }
 
-        // —U“±•ûŒü‚ÌŒvŽZ
         Vector3 desiredDir = target != null
             ? (target.position - transform.position).normalized
             : transform.forward;
@@ -41,11 +40,23 @@ public class HomingProjectile : MonoBehaviour
         float maxRadians = Mathf.Deg2Rad * turnRateDegPerSec * Time.deltaTime;
         Vector3 newDir = Vector3.RotateTowards(currentDir, desiredDir, maxRadians, 0f);
 
-        // ˆÚ“®‚Æ‰ñ“]
         transform.position += newDir * speed * Time.deltaTime;
-        transform.rotation = Quaternion.LookRotation(newDir, Vector3.up);
 
-        // Žè“®ƒqƒbƒg”»’è
+        if (newDir != Vector3.zero)
+        {
+            Vector3 up = Vector3.up;
+            Vector3 right = Vector3.Cross(up, newDir).normalized;
+            up = Vector3.Cross(newDir, right).normalized;
+
+            Matrix4x4 rotMatrix = new Matrix4x4();
+            rotMatrix.SetColumn(0, right);
+            rotMatrix.SetColumn(1, up);
+            rotMatrix.SetColumn(2, newDir);
+            rotMatrix.SetColumn(3, new Vector4(0, 0, 0, 1));
+
+            transform.rotation = rotMatrix.rotation;
+        }
+
         if (target != null)
         {
             Vector3 toTarget = target.position - transform.position;
@@ -58,4 +69,5 @@ public class HomingProjectile : MonoBehaviour
             }
         }
     }
+
 }
